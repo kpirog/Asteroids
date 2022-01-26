@@ -5,6 +5,8 @@ public class Player : MonoBehaviour
     [SerializeField] private float speed = 10.0f;
     [SerializeField] private float turningSpeed = 1.0f;
 
+    public Bullet bulletPrefab;
+
     private float turningDirection;
     private bool IsSpeeding => Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow);
     private bool IsTurningLeft => Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow);
@@ -24,6 +26,9 @@ public class Player : MonoBehaviour
             turningDirection = -1.0f;
         else
             turningDirection = 0.0f;
+
+        if (Input.GetButtonDown("Fire1"))
+            Shoot();
     }
     private void FixedUpdate()
     {
@@ -32,5 +37,11 @@ public class Player : MonoBehaviour
 
         if(turningDirection != 0f)
             rb.AddTorque(turningDirection * turningSpeed);
+    }
+
+    private void Shoot()
+    {
+        Bullet bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
+        bullet.Project(transform.up);
     }
 }
