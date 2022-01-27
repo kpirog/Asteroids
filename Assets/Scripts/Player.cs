@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Player : MonoBehaviour
 {
@@ -13,6 +14,8 @@ public class Player : MonoBehaviour
     private bool IsTurningRight => Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow);
 
     private Rigidbody2D rb;
+
+    [HideInInspector] public UnityEvent onPlayerDied;
 
     private void Awake()
     {
@@ -43,5 +46,21 @@ public class Player : MonoBehaviour
     {
         Bullet bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
         bullet.Project(transform.up);
+    }
+
+    public void ResetPosition()
+    {
+        rb.transform.position = Vector3.zero;
+        rb.transform.eulerAngles = Vector3.zero;
+        rb.velocity = Vector3.zero;
+        rb.angularVelocity = 0f;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.layer == LayerMask.NameToLayer("Asteroid"))
+        {
+            onPlayerDied?.Invoke();
+        }
     }
 }

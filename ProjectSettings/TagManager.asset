@@ -15,8 +15,8 @@ TagManager:
   - Player
   - Bullet
   - Boundary
-  - 
-  - 
+  - Asteroid
+  - IgnoreCollisions
   - 
   - 
   - 
